@@ -1,14 +1,18 @@
 package org.banananinja.whatclinicchallenge.model;
 
-
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.banananinja.whatclinicchallenge.R;
+
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class ContactListAdapter extends BaseAdapter {
 	
@@ -24,8 +28,34 @@ public class ContactListAdapter extends BaseAdapter {
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		final Contact contact = (Contact) getItem(position);
+		
+        View itemLayout = convertView;
+		
+		if (itemLayout == null) {
+			LayoutInflater inflater = LayoutInflater.from(context);
+			itemLayout = inflater.inflate(R.layout.list_item, null);
+		}
+
+		//Inflate the View for this Contact
+		// from list_item.xml.
+		
+		// Fill in specific Contact data
+		final TextView nameView = (TextView) itemLayout.findViewById(R.id.nameView);
+		nameView.setText(contact.getName());
+		
+		final TextView emailView = (TextView) itemLayout.findViewById(R.id.emailView);
+		emailView.setText(contact.getEmail());
+		
+		final TextView phoneView = (TextView) itemLayout.findViewById(R.id.phoneView);
+		phoneView.setText(contact.getPhone());
+		
+		final TextView countryView = (TextView) itemLayout.findViewById(R.id.countryView);
+		countryView.setText(contact.getCountry());
+		
+		// Return the View you just created
+		return itemLayout;
 	}
 
 	@Override
