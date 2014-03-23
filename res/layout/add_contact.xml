@@ -50,7 +50,7 @@
         android:layout_marginTop="14dp"
         android:ems="10"
         android:hint="@string/country_hint" 
-        android:inputType="textShortMessage">
+        android:inputType="textCapWords">
     </EditText>
     
     <EditText

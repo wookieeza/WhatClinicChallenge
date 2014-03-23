@@ -10,8 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ContactListAdapter extends BaseAdapter {
@@ -75,6 +73,11 @@ public class ContactListAdapter extends BaseAdapter {
 	
 	public void add (Contact contact){
 		contactList.add(contact);
+		notifyDataSetChanged();
+	}
+	
+	public void addAll (List <Contact> contacts){
+		contactList.addAll(contacts);
 		notifyDataSetChanged();
 	}
 	
