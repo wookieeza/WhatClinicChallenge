@@ -1,14 +1,20 @@
 package org.banananinja.whatclinicchallenge;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 import org.banananinja.whatclinicchallenge.model.Contact;
 import org.banananinja.whatclinicchallenge.model.ContactListAdapter;
 import org.json.JSONArray;
@@ -103,6 +109,7 @@ public class MainActivity extends ListActivity {
 		// TODO Auto-generated method stub
 		if (ADD_CONTACT_REQUEST == requestCode && RESULT_OK == resultCode) {
 			Contact contact = new Contact(data);
+			new HttpPostTask().execute(contact);
 			cListAdapter.add(contact);
 		}
 	}
@@ -118,7 +125,7 @@ public class MainActivity extends ListActivity {
 		@Override
 		protected List<Contact> doInBackground(Void... params) {
 			HttpGet get = new HttpGet(URL);
-			JSONResponseHandler responseHandler = new JSONResponseHandler();
+			JSONContactsResponseHandler responseHandler = new JSONContactsResponseHandler();
 			try {
 				return androidHttpClient.execute(get, responseHandler);
 			} catch (ClientProtocolException e) {
@@ -134,13 +141,58 @@ public class MainActivity extends ListActivity {
 			if (null != androidHttpClient) {
 				androidHttpClient.close();
 			}
-			((ContactListAdapter) getListAdapter()).addAll(results);
+			// make sure we got something back from the server
+			if (null != results) { 
+				((ContactListAdapter) getListAdapter()).addAll(results);
+			}
+			
+		}
+    }
+	
+	private class HttpPostTask extends AsyncTask<Contact, Void, Contact> {
 
+		private static final String TAG = "HttpPostTask";
+
+		private static final String URL = "http://hidden-oasis-1864.herokuapp.com/contacts";
+
+		AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance("");
+
+		@Override
+		protected Contact doInBackground(Contact... param) {
+			HttpPost post = new HttpPost(URL);
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+			nameValuePairs.add(new BasicNameValuePair(Contact.NAME, param[0].getName()));
+			nameValuePairs.add(new BasicNameValuePair(Contact.PHONE, param[0].getPhone()));
+			nameValuePairs.add(new BasicNameValuePair(Contact.EMAIL, param[0].getEmail()));
+			
+			JSONContactResponseHandler responseHandler = new JSONContactResponseHandler();
+			try {
+				post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				return androidHttpClient.execute(post, responseHandler);
+			} catch (ClientProtocolException e) {
+				Log.e(TAG, e.getMessage());
+				e.printStackTrace();
+			} catch (IOException e) {
+				Log.e(TAG, e.getMessage());
+				e.printStackTrace();
+			}
+			return null;
 		}
 
-	}
+		@Override
+		protected void onPostExecute(Contact result) {
+			if (null != androidHttpClient) {
+				androidHttpClient.close();
+			}
+			// make sure we got something back from the server
+//			if (null != result) {
+//				((ContactListAdapter) getListAdapter()).add(result);
+//			}
+//			
+		}
+    }
 	
-	private class JSONResponseHandler implements ResponseHandler<List<Contact>> {
+	private class JSONContactsResponseHandler implements ResponseHandler<List<Contact>> {
 
 		private static final String CREATED_TAG = "created_at";
 		private static final String EMAIL_TAG = "email";
@@ -170,6 +222,41 @@ public class MainActivity extends ListActivity {
 							contact.getString(EMAIL_TAG)));
 
 				}
+			} catch (JSONException e) {
+				Log.e(JSONResponse, e.getMessage());
+			}
+
+			return result;
+		}
+		
+	}
+	
+	private class JSONContactResponseHandler implements ResponseHandler<Contact> {
+
+		private static final String CREATED_TAG = "created_at";
+		private static final String EMAIL_TAG = "email";
+		private static final String ID_TAG = "id";
+		private static final String NAME_TAG = "name";
+		private static final String PHONE_TAG = "phone";
+		private static final String UPDATED_TAG = "updated_at";
+		
+		@Override
+		public Contact handleResponse(HttpResponse response)
+				throws ClientProtocolException, IOException {
+			Contact result = null;
+
+			String JSONResponse = new BasicResponseHandler()
+					.handleResponse(response);
+
+			try {
+				JSONObject contact = (JSONObject) new JSONTokener(JSONResponse)
+						.nextValue();
+
+				result = new Contact(contact.getString(NAME_TAG),
+						contact.getString(PHONE_TAG),
+						contact.getString(NAME_TAG),
+						contact.getString(EMAIL_TAG));
+
 			} catch (JSONException e) {
 				Log.e(JSONResponse, e.getMessage());
 			}
