@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:paddingBottom="5dp"
         android:layout_alignParentTop="true"
+        android:fontFamily="Droid Sans Mono"
         android:textAppearance="?android:attr/textAppearanceLarge" >
     </TextView>
     
@@ -20,8 +22,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge" >
+    </TextView>
+    
+     <TextView
+        android:id="@+id/phoneView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/nameView"
+        android:fontFamily="Droid Sans Mono"
+        android:textColor="#000077"
+        android:textAppearance="?android:attr/textAppearanceMedium" >
     </TextView>
     
     <TextView
@@ -29,19 +42,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/idView"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
+        android:layout_below="@id/phoneView"
+        android:fontFamily="Droid Sans Mono"
+        android:textColor="#666666"
+        android:textStyle="italic"
+        android:textAppearance="?android:attr/textAppearanceMedium" >
     </TextView>
     
     
-    <TextView
-        android:id="@+id/phoneView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/emailView"
-        android:textAppearance="?android:attr/textAppearanceLarge" >
-    </TextView>
+   
     
     
     <TextView
@@ -50,10 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/phoneView"
+        android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge" >
     </TextView>
-    
-
-    
 
 </RelativeLayout>
