@@ -47,7 +47,7 @@ public class AddContactActivity extends Activity implements android.text.TextWat
 	    phoneNumberText.addTextChangedListener(this);
 	    emailText.addTextChangedListener(this);
 	    
-	    Intent intent = getIntent();
+	    final Intent intent = getIntent();
 		if (intent.hasExtra(Contact.CONTACT_ID)) {
 			nameText.setText(intent.getStringExtra(Contact.NAME));
 			phoneNumberText.setText(intent.getStringExtra(Contact.PHONE));
@@ -70,11 +70,20 @@ public class AddContactActivity extends Activity implements android.text.TextWat
 			
 			@Override
 			public void onClick(View v) {
-				//reset defaults
-				nameText.setText(EMPTY);
-				phoneNumberText.setText(EMPTY);
-				emailText.setText(EMPTY);
-				countryText.setText(EMPTY);
+				// reset defaults
+				if (intent.hasExtra(Contact.CONTACT_ID)) {
+					nameText.setText(intent.getStringExtra(Contact.NAME));
+					phoneNumberText.setText(intent
+							.getStringExtra(Contact.PHONE));
+					countryText.setText(intent.getStringExtra(Contact.COUNTRY));
+					emailText.setText(intent.getStringExtra(Contact.EMAIL));
+					idText.setText(intent.getStringExtra(Contact.CONTACT_ID));
+				} else {
+					nameText.setText(EMPTY);
+					phoneNumberText.setText(EMPTY);
+					emailText.setText(EMPTY);
+					countryText.setText(EMPTY);
+				}
 			}
 		});
 	    
@@ -83,32 +92,26 @@ public class AddContactActivity extends Activity implements android.text.TextWat
 			@Override
 			public void onClick(View v) {
 
-				if (!emailText.getText().toString().isEmpty()) {
-					try {
-						InternetAddress emailAddr = new InternetAddress(email);
-						emailAddr.validate();
-					} catch (AddressException ex) {
-						result = false;
-					}
-				}
-				
-				//check that name was supplied
 				if (nameText.getText().toString().isEmpty()) {
+					// check that name was supplied
 					Toast.makeText(
 							AddContactActivity.this,
 							getResources().getString(
 									R.string.validation_empty_name),
 							Toast.LENGTH_SHORT).show();
+					
 				} else if (phoneNumberText.getText().toString().isEmpty()
 						&& emailText.getText().toString().isEmpty()) {
-					//check that either email or phone number was supplied
+					// check that either email or phone number was supplied
 					Toast.makeText(
 							AddContactActivity.this,
 							getResources().getString(
 									R.string.validation_empty_phone_or_email),
 							Toast.LENGTH_SHORT).show();
-				} else {
-					// pack data
+					
+				} else 
+				{
+					// if all went well, pack data to save it
 					Intent data = new Intent();
 					Contact.packageAsIntent(data, idText.getText().toString(),
 							nameText.getText().toString(), phoneNumberText

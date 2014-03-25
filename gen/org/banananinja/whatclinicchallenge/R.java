@@ -61,7 +61,8 @@ public final class R {
         public static final int reset_string=0x7f050008;
         public static final int submit_string=0x7f050009;
         public static final int title_string=0x7f050002;
-        public static final int url=0x7f05000d;
+        public static final int url=0x7f05000e;
+        public static final int validation_email_address_format=0x7f05000d;
         public static final int validation_empty_name=0x7f05000b;
         public static final int validation_empty_phone_or_email=0x7f05000c;
         public static final int validation_empty_string=0x7f05000a;
