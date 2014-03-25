@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddContactActivity extends Activity implements android.text.TextWatcher{
+public class AddContactActivity extends Activity{
 	
 	Button cancelButton;
 	Button resetButton;
@@ -42,10 +42,6 @@ public class AddContactActivity extends Activity implements android.text.TextWat
 	    countryText = (EditText) findViewById(R.id.country);
 	    emailText = (EditText) findViewById(R.id.email);
 	    idText = (EditText) findViewById(R.id.contact_id);
-	    
-	    nameText.addTextChangedListener(this);
-	    phoneNumberText.addTextChangedListener(this);
-	    emailText.addTextChangedListener(this);
 	    
 	    final Intent intent = getIntent();
 		if (intent.hasExtra(Contact.CONTACT_ID)) {
@@ -128,24 +124,5 @@ public class AddContactActivity extends Activity implements android.text.TextWat
 
 	}
 
-	@Override
-	public void afterTextChanged(Editable s) {
-		if (s.toString().isEmpty()) {
-			Toast.makeText(AddContactActivity.this, getResources().getString(R.string.validation_empty_string), Toast.LENGTH_SHORT).show();
-		}
-		
-	}
-
-	@Override
-	public void beforeTextChanged(CharSequence s, int start, int count,
-			int after) {
-		// do nothing
-		
-	}
-
-	@Override
-	public void onTextChanged(CharSequence s, int start, int before, int count) {
-		// do nothing
-		
-	}
+	
 }
