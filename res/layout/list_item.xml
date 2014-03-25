@@ -14,12 +14,22 @@
         android:textAppearance="?android:attr/textAppearanceLarge" >
     </TextView>
     
+     <TextView
+        android:id="@+id/idView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"
+        android:textAppearance="?android:attr/textAppearanceLarge" >
+    </TextView>
+    
     <TextView
         android:id="@+id/emailView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/nameView"
+        android:layout_below="@id/idView"
         android:textAppearance="?android:attr/textAppearanceLarge" >
     </TextView>
     

@@ -19,6 +19,7 @@ public class AddContactActivity extends Activity {
 	EditText phoneNumberText;
 	EditText countryText;
 	EditText emailText;
+	EditText idText;
 	public static final String EMPTY = "";
 
 	@Override
@@ -37,6 +38,17 @@ public class AddContactActivity extends Activity {
 	    phoneNumberText = (EditText) findViewById(R.id.phone);
 	    countryText = (EditText) findViewById(R.id.country);
 	    emailText = (EditText) findViewById(R.id.email);
+	    idText = (EditText) findViewById(R.id.contact_id);
+	    
+	    Intent intent = getIntent();
+		if (intent.hasExtra(Contact.CONTACT_ID)) {
+			nameText.setText(intent.getStringExtra(Contact.NAME));
+			phoneNumberText.setText(intent.getStringExtra(Contact.PHONE));
+			countryText.setText(intent.getStringExtra(Contact.COUNTRY));
+			emailText.setText(intent.getStringExtra(Contact.EMAIL));
+			idText.setText(intent.getStringExtra(Contact.CONTACT_ID));
+		}
+		
 	    
 	    cancelButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -65,11 +77,16 @@ public class AddContactActivity extends Activity {
 			public void onClick(View v) {
 				//pack data
 				Intent data = new Intent ();
+				
+				
+				
 				Contact.packageAsIntent(data, 
+						idText.getText().toString(), 
 						nameText.getText().toString(),
 						phoneNumberText.getText().toString(),
 						countryText.getText().toString(),
 						emailText.getText().toString());
+				data.putExtra(Contact.POSITION, getIntent().getIntExtra(Contact.POSITION, 0));
 				setResult(RESULT_OK, data);
 				finish();
 			}

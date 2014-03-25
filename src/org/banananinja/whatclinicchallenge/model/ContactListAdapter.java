@@ -52,6 +52,9 @@ public class ContactListAdapter extends BaseAdapter {
 		final TextView countryView = (TextView) itemLayout.findViewById(R.id.countryView);
 		countryView.setText(contact.getCountry());
 		
+		final TextView idView = (TextView) itemLayout.findViewById(R.id.idView);
+		idView.setText(contact.getId());
+		
 		// Return the View you just created
 		return itemLayout;
 	}
@@ -69,6 +72,12 @@ public class ContactListAdapter extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return position;
+	}
+	
+	
+	public void updateContactAtLocation(int position, Contact update) {
+		contactList.set(position, update);
+		notifyDataSetChanged();
 	}
 	
 	public void add (Contact contact){
